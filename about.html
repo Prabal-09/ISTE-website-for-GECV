@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About | ASAGE’25</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* ---------- NAVBAR ---------- */
+    .main-nav {
+    background: linear-gradient(to right, #00695c, #004d40);
+    color: #fff;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    }
+
+    .nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0.6rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    }
+
+    /* Brand */
+    .brand {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: white;
+    }
+    .brand .logo {
+    width: 56px;
+    margin-right: 0.6rem;
+    }
+    .brand-title {
+    font-weight: 700;
+    font-size: 1.1rem;
+    letter-spacing: 0.5px;
+    }
+
+    /* Toggle button - mobile */
+    .nav-toggle {
+    display: none;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    }
+    .hamburger {
+    display: block;
+    width: 26px;
+    height: 2px;
+    background: #fff;
+    position: relative;
+    }
+    .hamburger::before,
+    .hamburger::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 26px;
+    height: 2px;
+    background: #fff;
+    }
+    .hamburger::before { top: -8px; }
+    .hamburger::after  { top: 8px; }
+
+    /* Links */
+    .nav-links {
+    list-style: none;
+    display: flex;
+    gap: 1rem;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+    }
+    .nav-links li {
+    position: relative;
+    }
+    .nav-links a {
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 0.5rem 0.6rem;
+    display: inline-block;
+    transition: color 0.22s ease, transform 0.18s ease;
+    }
+    .nav-links a:hover {
+    color: #e0f2f1;
+    transform: translateY(-2px);
+    }
+
+    /* Dropdown */
+    .dropdown .dropdown-content {
+    display: none;
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    min-width: 220px;
+    background: #004d40;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+    border-radius: 6px;
+    padding: 0.4rem 0;
+    z-index: 50;
+    }
+    .dropdown .dropdown-content a {
+    display: block;
+    padding: 0.6rem 1rem;
+    color: #fff;
+    font-weight: 500;
+    }
+    .dropdown .dropdown-content a:hover {
+    background: #e0f2f1;
+    color: #004d40;
+    }
+
+    /* Show dropdown on hover for desktop */
+    @media (hover: hover) and (min-width: 601px) {
+    .dropdown:hover .dropdown-content {
+        display: block;
+        animation: fadeIn 0.18s ease;
+    }
+    }
+
+    /* Responsive: stacked nav on small screens */
+    @media (max-width: 600px) {
+    .nav-toggle { display: block; }
+    .nav-links {
+        position: absolute;
+        right: 1rem;
+        top: 64px;
+        background: linear-gradient(to bottom, #00695c, #004d40);
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 0.6rem;
+        gap: 0;
+        border-radius: 8px;
+        display: none; /* toggled by JS */
+        box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+    }
+    .nav-links.open { display: flex; }
+    .nav-links li { width: 220px; }
+    .nav-links a { width: 100%; padding: 0.75rem 0.9rem; }
+    .dropdown .dropdown-content {
+        position: static;
+        display: none; /* toggled by JS for mobile */
+        width: 100%;
+        background: transparent;
+        box-shadow: none;
+        padding-left: 0.6rem;
+    }
+    .dropdown.open .dropdown-content { display: block; }
+    }
+
+    /* Page-specific styles */
+    header {
+      background: linear-gradient(to right, #00695c, #004d40);
+      color: white;
+      text-align: center;
+      padding: 2em 1em;
+    }
+
+    header h1 {
+      font-size: 2.5em;
+      margin-bottom: 0.3em;
+    }
+
+    header p {
+      font-size: 1.1em;
+      color: #e0f2f1;
+    }
+
+    section {
+      max-width: 1000px;
+      margin: 2em auto;
+      padding: 2em;
+      background: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      opacity: 0;
+      animation: fadeIn 1s ease-in forwards;
+    }
+
+    section h2 {
+      color: #004d40;
+      margin-bottom: 0.8em;
+      border-left: 5px solid #009688;
+      padding-left: 10px;
+    }
+
+    section p {
+      line-height: 1.7;
+      color: #333;
+      text-align: justify;
+    }
+
+    .committee-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5em;
+      margin-top: 1.5em;
+    }
+
+    .committee-card {
+      background: #e0f2f1;
+      padding: 1.5em;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+
+    .committee-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .committee-card h3 {
+      color: #004d40;
+      margin-bottom: 0.3em;
+    }
+
+    .committee-card p {
+      color: #00695c;
+      font-size: 0.95em;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="main-nav">
+    <div class="nav-container">
+        <a href="index.html" class="brand">
+        <!-- optional: <img src="images/logo.png" alt="ASAGE Logo" class="logo"> -->
+        <span class="brand-title">ASAGE'26</span>
+        </a>
+
+        <button class="nav-toggle" aria-label="Toggle navigation">
+        <span class="hamburger"></span>
+        </button>
+
+        <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+
+        <li class="dropdown">
+            <a href="about.html">About</a>
+            <div class="dropdown-content">
+            <a href="#about-conference">About the Conference</a>
+            <a href="#objectives">Objectives</a>
+            <a href="#committee">Organizing Committee</a>
+            <a href="#speakers">Keynote Speakers</a>
+            </div>
+        </li>
+
+        <li class="dropdown">
+            <a href="themes.html">Themes</a>
+            <div class="dropdown-content">
+            <a href="themes.html#structural">Structural</a>
+            <a href="themes.html#geotechnical">Geotechnical</a>
+            <a href="themes.html#materials">Materials</a>
+            <a href="themes.html#innovations">Emerging Tech</a>
+            </div>
+        </li>
+
+        <li><a href="registration.html">Registration</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </div>
+    </nav>
+
+
+  <!-- Hero Header -->
+  <header>
+    <h1>About ASAGE’25</h1>
+    <p>Advances in Sustainable Architecture and Green Engineering</p>
+  </header>
+
+  <!-- About Conference -->
+  <section id="about-conference">
+    <h2>About the Conference</h2>
+    <p>
+      ASAGE’25 is an international conference focused on the theme of “Advances in Sustainable Architecture and Green Engineering.” 
+      It aims to bring together researchers, academicians, and industry professionals to discuss innovative approaches and 
+      emerging technologies that drive sustainable development in civil and environmental engineering.
+    </p>
+    <p>
+      The conference provides a platform for interdisciplinary collaboration, encouraging participants to share their 
+      insights, findings, and best practices in green construction, smart materials, renewable energy applications, 
+      and eco-friendly infrastructure solutions.
+    </p>
+  </section>
+
+  <!-- Objectives -->
+  <section id="objectives">
+    <h2>Objectives</h2>
+    <p>
+      The primary objectives of ASAGE’25 are to:
+    </p>
+    <ul>
+      <li>Promote research and innovation in sustainable and green engineering technologies.</li>
+      <li>Encourage collaboration between academia, industry, and government institutions.</li>
+      <li>Highlight emerging trends in energy-efficient and environmentally responsible design.</li>
+      <li>Provide networking opportunities for young researchers and professionals.</li>
+    </ul>
+  </section>
+
+  <!-- Organizing Committee -->
+  <section id="committee">
+    <h2>Organizing Committee</h2>
+    <div class="committee-grid">
+      <div class="committee-card">
+        <h3>Dr. Bhaskar Kumar</h3>
+        <p>Conference Chair</p>
+      </div>
+      <div class="committee-card">
+        <h3>Dr. Vivek Ranjan</h3>
+        <p>Organizing Secretary</p>
+      </div>
+      <div class="committee-card">
+        <h3>Dr. Aman Singh</h3>
+        <p>Technical Committee Head</p>
+      </div>
+      <div class="committee-card">
+        <h3>Dr. Nisha Gupta</h3>
+        <p>Publication Coordinator</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Keynote Speakers -->
+  <section id="speakers">
+    <h2>Keynote Speakers</h2>
+    <p>
+      The conference will feature renowned keynote speakers from academia and industry, who will share their expertise 
+      and research insights on sustainable architecture, renewable energy integration, and innovative materials.
+    </p>
+  </section>
+
+  <!-- Footer -->
+  <footer style="background:#004d40; color:#e0f2f1; text-align:center; padding:1em;">
+    <p>© 2025 ASAGE’25 | Organized by Department of Civil Engineering, GEC</p>
+  </footer>
+</body>
+</html>
